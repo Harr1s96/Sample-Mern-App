@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import axios from 'axios';
+import apmAgent from '../rum';
 
 class EditTodo extends Component {
 
@@ -21,6 +22,10 @@ class EditTodo extends Component {
     }
 
     componentDidMount() {
+        
+        let transaction = apmAgent.startTransaction("Edit Todo List", "user-interaction");
+        transaction.addLabels({"component": "edit-todo"});
+        
         axios.get('http://localhost:4000/todos/'+this.props.match.params.id)
             .then(response => {
                 this.setState({
@@ -32,7 +37,8 @@ class EditTodo extends Component {
             })
             .catch(function (error) {
                 console.log(error);
-            })
+            });
+        transaction.end();
     }
 
     onChangeTodoDescription(e) {

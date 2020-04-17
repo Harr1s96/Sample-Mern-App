@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import axios from 'axios';
+import apmAgent from '../rum';
 
 class CreateTodo extends Component {
     constructor(props) {
@@ -31,6 +32,8 @@ class CreateTodo extends Component {
         });
     }
     onSubmit(e) {
+        let transaction = apmAgent.startTransaction("Create Todo List", "user-interaction");
+        transaction.addLabels({"component": "create-todo"});
         e.preventDefault();
         
         console.log(`Form submitted:`);
@@ -47,6 +50,8 @@ class CreateTodo extends Component {
 
         axios.post('http://localhost:4000/todos/add', newTodo)
             .then(res => console.log(res.data));
+        
+        transaction.end();
 
         this.setState({
             todo_description: '',

@@ -14,8 +14,6 @@ const Todo = props => (
     </tr>
 )
 
-let transaction = apmAgent.startTransaction("ComponentClick", "user-interaction");
-
 class TodosList extends Component {
 
     constructor(props) {
@@ -24,6 +22,10 @@ class TodosList extends Component {
     }
 
     componentDidMount() {
+        
+        let transaction = apmAgent.startTransaction("Get Todo List", "user-interaction");
+        transaction.addLabels({"component": "todo-list"});
+        
         axios.get('http://localhost:4000/todos/')
             .then(response => {
                 this.setState({ todos: response.data });
@@ -31,6 +33,8 @@ class TodosList extends Component {
             .catch(function (error){
                 console.log(error);
             })
+        
+        transaction.end();
     }
 
     todoList() {

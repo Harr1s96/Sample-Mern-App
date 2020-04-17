@@ -1,10 +1,13 @@
 import { init as initApm } from '@elastic/apm-rum';
+var pathName = window.location.pathname;
 var apm = initApm({
     serviceName: "frontend",
-    serverUrl: "http://localhost:8200",
-    serviceVersion: "",
+    serverUrl: "http://10.217.6.141:8200",
     environment: "Development",
-    breakdownMetrics: true
+    active: true,
+    instrument: true,
+    breakdownMetrics: true,
+    pageLoadTransactionName: pathName
 });
 
 export default apm;
