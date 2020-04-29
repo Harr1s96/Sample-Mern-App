@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
+import { withTransaction } from '@elastic/apm-rum-react';
 import apmAgent from '../rum';
 import axios from 'axios';
 
@@ -65,4 +66,4 @@ class TodosList extends Component {
     }
 }
 
-export default TodosList;
+export default withTransaction('TodosList', 'component')(TodosList);

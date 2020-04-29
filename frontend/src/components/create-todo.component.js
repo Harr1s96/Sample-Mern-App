@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import apmAgent from '../rum';
+import { withTransaction } from '@elastic/apm-rum-react';
 
 class CreateTodo extends Component {
     constructor(props) {
@@ -126,4 +127,4 @@ class CreateTodo extends Component {
     }
 }
 
-export default CreateTodo;
+export default withTransaction('CreateTodo', 'component')(CreateTodo);
